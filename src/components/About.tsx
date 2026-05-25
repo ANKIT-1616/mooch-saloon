@@ -25,7 +25,7 @@ export default function About() {
 
           <div className="flex flex-col gap-6 text-sm md:text-base text-white/70 leading-relaxed">
             <p>
-              Founded under the creative vision of master barber <strong>Rahul</strong>, Mooch Saloon is not just a parlor; it is a legendary men's refuge set in the mystical city of <strong>Pushkar, Rajasthan</strong>. We have set out to completely redefine the barbering experience by marrying local cultural heritage with premium, high-contrast global styling trends.
+              Founded under the creative vision of <strong>Rahul  & Team</strong>, Mooch Saloon is more than just a barber studio — it is a premium men's grooming destination located in the heart of <strong>Pushkar, Rajasthan</strong>. Combining modern styling techniques with traditional Rajasthani hospitality, the salon delivers a refined grooming experience crafted for confidence, comfort, and style.
             </p>
 
             <p className="text-white/60">
@@ -43,10 +43,10 @@ export default function About() {
             </div>
             <div>
               <h4 className="font-cinzel text-xs tracking-[0.2em] font-extrabold text-white uppercase mb-2">
-                Rahul Mastery
+                Team Craftsmanship
               </h4>
               <p className="font-sans text-[12px] text-white/50 leading-relaxed">
-                Personally audited barber services representing the top-tier of Rajasthani styling design.
+                Expert grooming services delivered by skilled professionals dedicated to precision, consistency, and modern styling excellence.
               </p>
             </div>
           </SectionReveal>

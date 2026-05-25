@@ -1,3 +1,4 @@
+import Showcase from "../components/MoochSaloonShowcase.jsx";
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
@@ -82,6 +83,11 @@ export default function HomePage() {
         <section id="about">
           <About />
         </section>
+        {/* Premium Showcase Section */}
+<section id="showcase">
+  <Showcase />
+</section>
+
 
         {/* Testimonials Review Slider */}
         <section id="reviews">
