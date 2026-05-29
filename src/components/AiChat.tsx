@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, Send, X, Bot } from 'lucide-react';
-import { askGroomingAI } from '@/src/lib/gemini';
+import { askGroomingAI } from '@/lib/gemini';
 
 interface Message {
   role: 'user' | 'ai';

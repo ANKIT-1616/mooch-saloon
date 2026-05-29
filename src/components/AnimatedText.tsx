@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion, type Variants } from "motion/react";
 
 interface AnimatedTextProps {
   text: string;
@@ -10,7 +10,7 @@ interface AnimatedTextProps {
 export default function AnimatedText({ text, className = "", el: Element = "h1", delay = 0 }: AnimatedTextProps) {
   const words = text.split(" ");
 
-  const container = {
+  const container: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -21,12 +21,12 @@ export default function AnimatedText({ text, className = "", el: Element = "h1",
     },
   };
 
-  const child = {
+  const child: Variants = {
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        ease: [0.16, 1, 0.3, 1],
+        ease: "easeOut",
         duration: 0.8,
       },
     },

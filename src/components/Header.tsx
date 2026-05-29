@@ -24,6 +24,13 @@ export default function Header({ activeSection }: HeaderProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
+
   const menuItems = [
     { label: "Home", href: "#home" },
     { label: "Services", href: "#services" },
@@ -130,6 +137,8 @@ export default function Header({ activeSection }: HeaderProps) {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 border border-white/5 bg-white/5 text-white hover:text-gold-500 transition-colors duration-300 rounded-none cursor-pointer"
               aria-label="Toggle mobile drawer menu"
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
             >
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -146,6 +155,7 @@ export default function Header({ activeSection }: HeaderProps) {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 top-0 left-0 right-0 bottom-0 z-30 bg-[#0B0B0B]/98 backdrop-blur-2xl flex flex-col justify-center px-8"
+            id="mobile-menu"
           >
             <div className="flex flex-col gap-8 max-w-sm mx-auto w-full text-center">
               <span className="font-sans text-[10px] uppercase tracking-[0.5em] text-gold-500 font-bold mb-4">

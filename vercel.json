@@ -3,6 +3,8 @@
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
+   {
+  "headers": [
     {
       "source": "/assets/(.*)",
       "headers": [
@@ -10,13 +12,37 @@
       ]
     },
     {
-      "source": "/(.*)",
+      "source": "/(.*)\\.webp",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        { "key": "Content-Type", "value": "image/webp" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    },
+    {
+      "source": "/(.*)\\.jpg",
+      "headers": [
+        { "key": "Content-Type", "value": "image/jpeg" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    },
+    {
+      "source": "/(.*)\\.mp4",
+      "headers": [
+        { "key": "Content-Type", "value": "video/mp4" },
+        { "key": "Accept-Ranges", "value": "bytes" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]
     }
+  ],
+  "rewrites": [
+    { "source": "/((?!assets|images|gallery|reels|og-image).*)", "destination": "/index.html" }
+  ]
+   }
   ]
 }

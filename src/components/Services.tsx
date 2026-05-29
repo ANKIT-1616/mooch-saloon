@@ -80,6 +80,95 @@ export default function Services() {
       icon: Palette,
     },
     {
+  id: "threading",
+  name: "Eyebrow Threading",
+  category: "grooming",
+  price: "₹80",
+  duration: "15 Mins",
+  description: "Sharp eyebrow shaping and facial detailing for a clean, refined look.",
+  features: [
+    "Precise brow definition",
+    "Quick & hygienic process",
+    "Skin soothing finish"
+  ],
+  icon: Sparkles,
+},
+
+{
+  id: "hair-straightening",
+  name: "Hair Straightening",
+  category: "spa",
+  price: "₹2,500+",
+  duration: "120 Mins",
+  description: "Professional straightening treatment for smooth, sleek, frizz-free hair.",
+  features: [
+    "Long-lasting smooth texture",
+    "Heat protection treatment",
+    "Silky premium finish"
+  ],
+  icon: Droplet,
+},
+
+{
+  id: "hair-smoothening",
+  name: "Hair Smoothening",
+  category: "spa",
+  price: "₹3,000+",
+  duration: "150 Mins",
+  description: "Luxury smoothening therapy designed to tame rough and damaged hair.",
+  features: [
+    "Keratin-rich smoothening",
+    "Anti-frizz formula",
+    "Deep nourishment therapy"
+  ],
+  icon: Gem,
+},
+
+{
+  id: "beard-color",
+  name: "Beard Hair Colour",
+  category: "grooming",
+  price: "₹400+",
+  duration: "40 Mins",
+  description: "Natural-tone beard colouring and grey blending with skin-safe premium products.",
+  features: [
+    "Grey coverage",
+    "Natural matte finish",
+    "Long-lasting tone"
+  ],
+  icon: Palette,
+},
+
+{
+  id: "groom-makeup",
+  name: "Groom Makeup",
+  category: "packages",
+  price: "₹2,000+",
+  duration: "90 Mins",
+  description: "Professional groom preparation makeup for weddings and special events.",
+  features: [
+    "Skin tone balancing",
+    "HD finish",
+    "Sweat-resistant look"
+  ],
+  icon: Award,
+},
+
+{
+  id: "bridal-makeup",
+  name: "Professional Makeup",
+  category: "packages",
+  price: "₹3,500+",
+  duration: "120 Mins",
+  description: "Elegant makeup artistry for parties, events, and premium styling sessions.",
+  features: [
+    "Premium cosmetic products",
+    "Professional finish",
+    "Customized styling"
+  ],
+  icon: Smile,
+},
+    {
       id: "royal-rajput-package",
       name: "Royal Rajput Groom Package",
       category: "packages",
@@ -108,14 +197,14 @@ export default function Services() {
           <div>
             <span className="font-cinzel text-xs tracking-[0.4em] text-gold-500 font-bold block mb-3">— THE RITUAL MENU</span>
             <AnimatedText
-              text="LUXURY SERVICES."
+              text="PREMIUM GROOMING SERVICES."
               className="font-cinzel text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-wide"
               el="h2"
             />
           </div>
           <div className="max-w-md">
             <p className="font-sans text-sm md:text-base text-white/60 leading-relaxed">
-              Every appointment at Mooch Saloon is treated like a masterwork. We blend artisan craftsmanship with top-tier hair treatments of the highest standard.
+              At Mooch Saloon, every service is crafted with precision, style, and premium care — from modern fades and beard sculpting to luxury hair treatments and groom preparation. We blend artisan craftsmanship with top-tier hair treatments of the highest standard.
             </p>
           </div>
         </div>
@@ -132,7 +221,13 @@ export default function Services() {
                   : "border-white/5 text-white/60 hover:text-white hover:border-white/20 hover:bg-white/5"
               }`}
             >
-              {tab === "all" ? "Full Collection" : tab === "grooming" ? "Elite Grooming" : tab === "spa" ? "Spa & Skin" : "Groom Packages"}
+              {tab === "all"
+  ? "All Services"
+  : tab === "grooming"
+  ? "Hair & Grooming"
+  : tab === "spa"
+  ? "Hair Treatments"
+  : "Premium Packages"}
               {activeTab === tab && (
                 <motion.div
                   layoutId="tabUnderline"

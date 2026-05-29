@@ -1,36 +1,30 @@
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI } from "@google/genai";
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY as string;
+const systemInstruction =
+  "You are the premium grooming assistant for Mooch Saloon in Pushkar. Keep responses concise, practical, and customer-safe. If unsure, suggest contacting the salon directly.";
 
-let client: GoogleGenAI | null = null;
+export async function askGroomingAI(prompt: string): Promise<string> {
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
-export function getGeminiClient(): GoogleGenAI {
-  if (!API_KEY) {
-    throw new Error('VITE_GEMINI_API_KEY is not set. Add it to your .env.local file.');
+  if (!apiKey) {
+    throw new Error("Missing VITE_GEMINI_API_KEY");
   }
-  if (!client) {
-    client = new GoogleGenAI({ apiKey: API_KEY });
-  }
-  return client;
-}
 
-export async function askGroomingAI(userMessage: string): Promise<string> {
-  const ai = getGeminiClient();
-  const systemPrompt = `You are the grooming expert at Mooch Saloon, a luxury barbershop in Pushkar, Rajasthan, India. 
-You help clients with grooming advice, beard styling tips, haircut recommendations, and answer questions about our services.
-Be warm, professional, and knowledgeable. Keep responses concise (2-3 sentences max unless asked for detail).
-Our services include: Royal Hot Towel Shave, Master Beard Sculpting, Signature Haircuts, Hair Spa & Treatments, Keratin & Smoothening.
-Always mention we are located in the heart of Pushkar, Rajasthan.`;
-
-  const response = await ai.models.generateContent({
-    model: 'gemini-2.0-flash',
-    contents: [
-      {
-        role: 'user',
-        parts: [{ text: `${systemPrompt}\n\nClient question: ${userMessage}` }],
-      },
-    ],
+  const client = new GoogleGenAI({ apiKey });
+  const response = await client.models.generateContent({
+    model: "gemini-2.0-flash",
+    contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: {
+      systemInstruction,
+      maxOutputTokens: 220,
+      temperature: 0.6,
+    },
   });
 
-  return response.text ?? 'Sorry, I could not generate a response. Please try again.';
+  const text = response.text?.trim();
+  if (!text) {
+    throw new Error("Empty AI response");
+  }
+
+  return text;
 }

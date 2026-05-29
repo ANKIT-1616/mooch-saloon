@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { MessageSquare, Instagram, ArrowDown } from "lucide-react";
 import AnimatedText from "./AnimatedText";
 import CinematicButton from "./CinematicButton";
@@ -12,16 +12,16 @@ export default function Hero() {
   };
 
   return (
-    <section
-      id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black text-white"
-    >
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black text-white">
       {/* Background Cinematic Image with heavy dark vignette overlays */}
       <div className="absolute inset-0 z-0">
         <img
           src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=2000&auto=format&fit=crop"
           alt="Luxury Barber Studio Interior"
           referrerPolicy="no-referrer"
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
           className="w-full h-full object-cover object-center scale-105 filter brightness-[0.35] contrast-[1.10] saturation-75"
         />
         {/* Radial Vignette & Linear Gradients for Absolute Depth */}
@@ -52,7 +52,7 @@ export default function Hero() {
 
         {/* Cinematic Main Heading */}
         <AnimatedText
-          text="Crafting Confidence Through Style."
+          text="Where Royal Grooming Meets Modern Luxury."
           className="font-cinzel text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-white mb-6 uppercase max-w-4xl leading-tight"
           delay={0.15}
         />

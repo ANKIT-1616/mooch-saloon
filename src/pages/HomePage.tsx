@@ -1,14 +1,19 @@
-import Showcase from "../components/MoochSaloonShowcase.jsx";
-import { useState, useEffect } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import Services from "../components/Services";
 import About from "../components/About";
-import Testimonials from "../components/Testimonials";
-import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 import ScrollToTop from "../components/ScrollToTop";
 import { MessageSquare } from "lucide-react";
+
+const Showcase = lazy(() => import("../components/MoochSaloonShowcase.jsx"));
+const Testimonials = lazy(() => import("../components/Testimonials"));
+const Contact = lazy(() => import("../components/Contact"));
+
+function SectionFallback() {
+  return <div className="h-28 w-full animate-pulse bg-white/[0.02]" aria-hidden="true" />;
+}
 
 export default function HomePage() {
   const [activeSection, setActiveSection] = useState("home");
@@ -68,7 +73,7 @@ export default function HomePage() {
       <Header activeSection={activeSection} />
 
       {/* Symmetrical cascading grid rows */}
-      <main>
+      <main id="main-content">
         {/* Hero Section */}
         <section id="home">
           <Hero />
@@ -84,19 +89,25 @@ export default function HomePage() {
           <About />
         </section>
         {/* Premium Showcase Section */}
-<section id="showcase">
-  <Showcase />
-</section>
+        <section id="showcase">
+          <Suspense fallback={<SectionFallback />}>
+            <Showcase />
+          </Suspense>
+        </section>
 
 
         {/* Testimonials Review Slider */}
         <section id="reviews">
-          <Testimonials />
+          <Suspense fallback={<SectionFallback />}>
+            <Testimonials />
+          </Suspense>
         </section>
 
         {/* Interactive Contact & Coordinate Map Drawer */}
         <section id="contact">
-          <Contact />
+          <Suspense fallback={<SectionFallback />}>
+            <Contact />
+          </Suspense>
         </section>
       </main>
 

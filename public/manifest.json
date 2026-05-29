@@ -1,0 +1,12 @@
+{
+  "name": "Mooch Saloon",
+  "short_name": "Mooch",
+  "description": "Pushkar's Premier Luxury Barber & Grooming Studio",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#c9a84c",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

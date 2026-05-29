@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { ReactNode } from "react";
-import { cn } from "@/src/lib/utils";
+import { cn } from "../lib/utils";
 
 interface GlassmorphismCardProps {
   children: ReactNode;
@@ -16,6 +16,7 @@ export default function GlassmorphismCard({
   hoverGlow = true,
 }: GlassmorphismCardProps) {
   return (
+    
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
