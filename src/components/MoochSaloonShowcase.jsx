@@ -523,7 +523,7 @@ function ReelCard({ reel, index }) {
     >
       <video
   src="/reels/reel1.mp4"
-  poster="/reels/reel1-poster.jpg"   // ← mandatory
+   poster="/reels/r1-poster.jpg"   // ← mandatory
   playsInline
   muted
   preload="none"                      

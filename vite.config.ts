@@ -1,16 +1,28 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'   // ← ADD THIS
+import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
-// vite.config.js
-export default {
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+  ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  server: {
+    port: 5173,
+    open: true,
+  },
   build: {
-    assetsInlineLimit: 0,  // ← never inline images as base64
+    assetsInlineLimit: 0,
     rollupOptions: {
       output: {
         assetFileNames: 'assets/[name]-[hash][extname]',
       }
     }
   }
-}
+})
