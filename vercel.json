@@ -2,11 +2,10 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
-    {
-      "source": "/((?!assets|gallery|reels|team|favicon|og-image|manifest|robots|sitemap).*)",
-      "destination": "/index.html"
-    }
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
     {
@@ -22,20 +21,6 @@
       ]
     },
     {
-      "source": "/(.*)\\.webp",
-      "headers": [
-        { "key": "Content-Type", "value": "image/webp" },
-        { "key": "Cache-Control", "value": "public, max-age=86400" }
-      ]
-    },
-    {
-      "source": "/(.*)\\.jpe?g",
-      "headers": [
-        { "key": "Content-Type", "value": "image/jpeg" },
-        { "key": "Cache-Control", "value": "public, max-age=86400" }
-      ]
-    },
-    {
       "source": "/(.*)\\.mp4",
       "headers": [
         { "key": "Content-Type", "value": "video/mp4" },
@@ -45,4 +30,3 @@
     }
   ]
 }
-
