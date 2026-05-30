@@ -67,23 +67,22 @@ const TEAM = [
 ];
 
 const GALLERY = [
-  { id: 1,  src: "/gallery/g1.jpg",  label: "The Mooch Lounge",         span: "row-span-2" },
-  { id: 3,  src: "/gallery/g3.jpg",  label: "Textured Pompadour" },
-  { id: 4,  src: "/gallery/g4.jpg",  label: "The Finish",               span: "row-span-2" },
-  { id: 5,  src: "/gallery/g5.jpg",  label: "The Gentleman's Fade" },
-  { id: 6,  src: "/gallery/g6.jpg",  label: "Where Style Meets Comfort" },
-  { id: 7,  src: "/gallery/g7.jpg",  label: "Mid Taper Fade" },
-  { id: 9,  src: "/gallery/g9.jpg",  label: "Luxury Fade" },
-  { id: 10, src: "/gallery/g10.jpg", label: "Royal Styling" },
-  { id: 11, src: "/gallery/g11.jpg", label: "Sharp Beard Work" },
-  { id: 12, src: "/gallery/g12.jpg", label: "Premium Finish" },
+  
+  { id: 1, src: "/gallery/g1.webp",  label: "The Mooch Lounge",         span: "row-span-2" },
+  { id: 2, src: "/gallery/g2.webp",  label: "Royal Styling" },
+  { id: 3, src: "/gallery/g3.webp",  label: "Textured Pompadour" },
+  { id: 4, src: "/gallery/g4.webp",  label: "The Finish",               span: "row-span-2" },
+  { id: 5, src: "/gallery/g5.webp",  label: "The Gentleman's Fade" },
+  { id: 6, src: "/gallery/g6.webp",  label: "Where Style Meets Comfort" },
+  { id: 7, src: "/gallery/g7.webp",  label: "Mid Taper Fade" },
+  { id: 8, src: "/gallery/g8.webp",  label: "Premium Finish" },
+  { id: 9, src: "/gallery/g9.webp",  label: "Sharp Beard Work" },
 ];
-
 const REELS = [
-  { id: 1, src: "/reels/r1.mp4", thumb: "/gallery/g1.jpg",  title: "The Perfect Art" },
-  { id: 2, src: "/reels/r2.mp4", thumb: "/gallery/g4.jpg",  title: "The Craft" },
-  { id: 3, src: "/reels/r3.mp4", thumb: "/gallery/g7.jpg",  title: "Just The Salon Things" },
-  { id: 4, src: "/reels/r4.mp4", thumb: "/gallery/g10.jpg", title: "The Art of Grooming" },
+  { id: 1, src: "/reels/r1.mp4", thumb: "/gallery/g1.webp",  title: "The Perfect Art" },
+  { id: 2, src: "/reels/r2.mp4", thumb: "/gallery/g4.webp",  title: "The Craft" },
+  { id: 3, src: "/reels/r3.mp4", thumb: "/gallery/g7.webp",  title: "Just The Salon Things" },
+  { id: 4, src: "/reels/r4.mp4", thumb: "/gallery/g10.webp", title: "The Art of Grooming" },
 ];
 
 // ─── ANIMATION VARIANTS ───────────────────────────────────────────────────────
