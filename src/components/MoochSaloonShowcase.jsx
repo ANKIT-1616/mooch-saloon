@@ -79,9 +79,9 @@ const GALLERY = [
   { id: 9, src: "/gallery/g9.webp",  label: "Sharp Beard Work" },
 ];
 const REELS = [
-  { id: 1, src: "/reels/r1.mp4", thumb: "/gallery/g1.webp",  title: "The Perfect Art" },
-  { id: 2, src: "/reels/r2.mp4", thumb: "/gallery/g4.webp",  title: "The Craft" },
-  { id: 3, src: "/reels/r3.mp4", thumb: "/gallery/g7.webp",  title: "Just The Salon Things" },
+  { id: 1, src: "/reels/r1.mp4", thumb: "/gallery/g5.webp",  title: "The Perfect Art" },
+  { id: 2, src: "/reels/r2.mp4", thumb: "/gallery/g3.webp",  title: "The Craft" },
+  { id: 3, src: "/reels/r3.mp4", thumb: "/gallery/g1.webp",  title: "Just The Salon Things" },
   { id: 4, src: "/reels/r4.mp4", thumb: "/gallery/g9.webp", title: "The Art of Grooming" },
 ];
 
