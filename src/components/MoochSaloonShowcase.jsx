@@ -1,11 +1,44 @@
 /**
- * MoochSaloonShowcase.jsx — FIXED VERSION
+ * MoochSaloonShowcase.jsx — PRODUCTION FIXED
+ * Fixes: all missing imports, useReducedMotion removed (not in motion v12),
+ *        video src hardcode bug, picture element structure
  */
 
+import { useRef, useState, useEffect } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useInView,
+} from "motion/react";
+import {
+  Scissors,
+  Instagram,
+  Phone,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Play,
+  Pause,
+} from "lucide-react";
 
+// ─── REDUCED MOTION HOOK (replaces missing useReducedMotion from motion v12) ──
+function useReducedMotion() {
+  const [reduced, setReduced] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handler = (e) => setReduced(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  return reduced;
+}
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
-const heroImg = '/gallery/hero.jpg';
 const TEAM = [
   {
     id: "rahul",
@@ -16,6 +49,7 @@ const TEAM = [
     phone: "+91-8955209287",
     bio: "The visionary behind Mooch Saloon. Rahul brings precision, passion, and a decade of craft mastery to every cut — turning hair into art in the heart of Pushkar.",
     img: "/team/rahul.webp",
+    imgFallback: "/team/rahul.jpg",
     specialties: ["Skin Fades", "Pompadour", "Classic Cuts"],
   },
   {
@@ -27,15 +61,15 @@ const TEAM = [
     phone: "+91-7357498469",
     bio: "Manish blends modern techniques with Rajasthani charm. His eye for detail and obsession with clean lines make every client walk out feeling like royalty.",
     img: "/team/manish.webp",
+    imgFallback: "/team/manish.jpg",
     specialties: ["Beard Sculpting", "Hair Colour", "Texture Work"],
   },
 ];
-  
 
 const GALLERY = [
-  { id: 1,  src: "/gallery/g1.jpg",  label: "The Mooch Lounge",       span: "row-span-2" },
+  { id: 1,  src: "/gallery/g1.jpg",  label: "The Mooch Lounge",         span: "row-span-2" },
   { id: 3,  src: "/gallery/g3.jpg",  label: "Textured Pompadour" },
-  { id: 4,  src: "/gallery/g4.jpg",  label: "The Finish",             span: "row-span-2" },
+  { id: 4,  src: "/gallery/g4.jpg",  label: "The Finish",               span: "row-span-2" },
   { id: 5,  src: "/gallery/g5.jpg",  label: "The Gentleman's Fade" },
   { id: 6,  src: "/gallery/g6.jpg",  label: "Where Style Meets Comfort" },
   { id: 7,  src: "/gallery/g7.jpg",  label: "Mid Taper Fade" },
@@ -49,11 +83,10 @@ const REELS = [
   { id: 1, src: "/reels/r1.mp4", thumb: "/gallery/g1.jpg",  title: "The Perfect Art" },
   { id: 2, src: "/reels/r2.mp4", thumb: "/gallery/g4.jpg",  title: "The Craft" },
   { id: 3, src: "/reels/r3.mp4", thumb: "/gallery/g7.jpg",  title: "Just The Salon Things" },
-  { id: 4, src: "/reels/r4.mp4", thumb: "/gallery/g10.webp", title: "The Art of Grooming" },
+  { id: 4, src: "/reels/r4.mp4", thumb: "/gallery/g10.jpg", title: "The Art of Grooming" },
 ];
 
 // ─── ANIMATION VARIANTS ───────────────────────────────────────────────────────
-
 const fadeUp = {
   hidden: { opacity: 0, y: 48 },
   visible: (i = 0) => ({
@@ -72,8 +105,25 @@ const scaleIn = {
   }),
 };
 
-// ─── SECTION HEADER ───────────────────────────────────────────────────────────
+// ─── SAFE IMAGE — handles webp→jpg fallback ───────────────────────────────────
+function SafeImg({ src, fallback, alt, className, style, loading = "lazy", ...props }) {
+  const [errored, setErrored] = useState(false);
+  const actualSrc = errored ? (fallback || src.replace(".webp", ".jpg")) : src;
+  return (
+    <img
+      src={actualSrc}
+      alt={alt}
+      className={className}
+      style={style}
+      loading={loading}
+      decoding="async"
+      onError={() => setErrored(true)}
+      {...props}
+    />
+  );
+}
 
+// ─── SECTION HEADER ───────────────────────────────────────────────────────────
 function SectionHeader({ eyebrow, title, subtitle }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -122,7 +172,6 @@ function SectionHeader({ eyebrow, title, subtitle }) {
 }
 
 // ─── TEAM CARD ────────────────────────────────────────────────────────────────
-
 function TeamCard({ member, index, onImageClick }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -149,7 +198,6 @@ function TeamCard({ member, index, onImageClick }) {
           filter: "blur(20px)",
         }}
       />
-
       <div
         className="relative rounded-3xl overflow-hidden"
         style={{
@@ -160,42 +208,27 @@ function TeamCard({ member, index, onImageClick }) {
         }}
       >
         <div className="relative overflow-hidden" style={{ height: "380px" }}>
-          <picture>
-  <source
-    srcSet={member.img}
-    type="image/webp"
-  />
-
-  <motion.img
-    onClick={() => onImageClick(member)}
-    src={member.img.replace(".webp", ".jpg")}
-    alt={`${member.name} — ${member.role} at Mooch Saloon`}
-    loading="eager"
-    decoding="async"
-    className="w-full h-full object-cover object-top"
-    animate={{
-      scale: shouldReduceMotion ? 1 : hovered ? 1.06 : 1,
-    }}
-    transition={{
-      duration: shouldReduceMotion ? 0 : 0.7,
-      ease: [0.22, 1, 0.36, 1],
-    }}
-  />
-</picture>
-
-<motion.div
-  className="absolute inset-0"
-  style={{
-    background:
-      "linear-gradient(to bottom, transparent 40%, rgba(10,10,10,0.5) 70%, rgba(10,10,10,0.95) 100%)",
-  }}
-/>
+          <SafeImg
+            src={member.img}
+            fallback={member.imgFallback}
+            alt={`${member.name} — ${member.role} at Mooch Saloon`}
+            loading="eager"
+            className="w-full h-full object-cover object-top cursor-pointer"
+            style={{
+              transform: shouldReduceMotion ? "scale(1)" : hovered ? "scale(1.06)" : "scale(1)",
+              transition: shouldReduceMotion ? "none" : "transform 0.7s cubic-bezier(0.22,1,0.36,1)",
+            }}
+            onClick={() => onImageClick(member)}
+          />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: "linear-gradient(to bottom, transparent 40%, rgba(10,10,10,0.5) 70%, rgba(10,10,10,0.95) 100%)",
+            }}
+          />
           <div
             className="absolute top-5 right-5 w-10 h-10 rounded-full flex items-center justify-center"
-            style={{
-              background: "rgba(201,168,76,0.15)",
-              border: "1px solid rgba(201,168,76,0.4)",
-            }}
+            style={{ background: "rgba(201,168,76,0.15)", border: "1px solid rgba(201,168,76,0.4)" }}
           >
             <Scissors size={16} color="#C9A84C" />
           </div>
@@ -217,42 +250,40 @@ function TeamCard({ member, index, onImageClick }) {
             {member.bio}
           </p>
           <div className="flex flex-wrap gap-2">
-  {member.specialties.map((s) => (
-    <span
-      key={s}
-      className="text-xs px-3 py-1 rounded-full"
-      style={{
-        background: "rgba(201,168,76,0.1)",
-        border: "1px solid rgba(201,168,76,0.3)",
-        color: "#C9A84C",
-        letterSpacing: "0.05em",
-      }}
-    >
-      {s}
-    </span>
-  ))}
-</div>
-
-<div className="mt-5 flex flex-col gap-3">
-  <a
-    href={member.instagram}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="flex items-center gap-2 text-xs transition-all duration-300 hover:text-[#C9A84C]"
-    style={{ color: "rgba(255,255,255,0.45)" }}
-  >
-    <Instagram size={14} />
-    {member.handle}
-  </a>
-
-  <a
-    href={`tel:${member.phone}`}
-    className="flex items-center gap-2 text-xs transition-all duration-300 hover:text-[#C9A84C]"
-    style={{ color: "rgba(255,255,255,0.45)" }}
-  >
-    <Phone size={14} />
-    {member.phone}
-  </a>
+            {member.specialties.map((s) => (
+              <span
+                key={s}
+                className="text-xs px-3 py-1 rounded-full"
+                style={{
+                  background: "rgba(201,168,76,0.1)",
+                  border: "1px solid rgba(201,168,76,0.3)",
+                  color: "#C9A84C",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+          <div className="mt-5 flex flex-col gap-3">
+            <a
+              href={member.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-xs transition-all duration-300 hover:text-[#C9A84C]"
+              style={{ color: "rgba(255,255,255,0.45)" }}
+            >
+              <Instagram size={14} />
+              {member.handle}
+            </a>
+            <a
+              href={`tel:${member.phone}`}
+              className="flex items-center gap-2 text-xs transition-all duration-300 hover:text-[#C9A84C]"
+              style={{ color: "rgba(255,255,255,0.45)" }}
+            >
+              <Phone size={14} />
+              {member.phone}
+            </a>
           </div>
         </div>
       </div>
@@ -261,12 +292,9 @@ function TeamCard({ member, index, onImageClick }) {
 }
 
 // ─── MEMBER LIGHTBOX ──────────────────────────────────────────────────────────
-
 function MemberLightbox({ member, onClose }) {
   useEffect(() => {
-    const handler = (e) => {
-      if (e.key === "Escape") onClose();
-    };
+    const handler = (e) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handler);
     document.body.style.overflow = "hidden";
     return () => {
@@ -285,13 +313,9 @@ function MemberLightbox({ member, onClose }) {
       style={{ background: "rgba(0,0,0,0.95)" }}
       onClick={onClose}
     >
-      {/* Close button */}
       <button
         className="absolute top-6 right-6 z-10 w-10 h-10 rounded-full flex items-center justify-center"
-        style={{
-          background: "rgba(201,168,76,0.15)",
-          border: "1px solid rgba(201,168,76,0.4)",
-        }}
+        style={{ background: "rgba(201,168,76,0.15)", border: "1px solid rgba(201,168,76,0.4)" }}
         onClick={onClose}
         aria-label="Close"
       >
@@ -309,43 +333,26 @@ function MemberLightbox({ member, onClose }) {
           style={{ maxWidth: "420px" }}
           onClick={(e) => e.stopPropagation()}
         >
-          <picture>
-  <source
-    srcSet={member.img}
-    type="image/webp"
-  />
-
-  <img
-    src={member.img.replace(".webp", ".jpg")}
-    alt={`${member.name} — ${member.role} at Mooch Saloon`}
-    loading="eager"
-    decoding="async"
-    className="w-full h-auto rounded-2xl object-cover object-top"
-    style={{
-      maxHeight: "80vh",
-      backgroundColor: "#111",
-      boxShadow:
-        "0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(201,168,76,0.15)",
-    }}
-  />
-</picture>
+          <SafeImg
+            src={member.img}
+            fallback={member.imgFallback}
+            alt={`${member.name} — ${member.role} at Mooch Saloon`}
+            loading="eager"
+            className="w-full h-auto rounded-2xl object-cover object-top"
+            style={{
+              maxHeight: "80vh",
+              backgroundColor: "#111",
+              boxShadow: "0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(201,168,76,0.15)",
+            }}
+          />
           <div
             className="absolute bottom-0 left-0 right-0 p-6 rounded-b-2xl"
-            style={{
-              background:
-                "linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.5) 60%, transparent 100%)",
-            }}
+            style={{ background: "linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.5) 60%, transparent 100%)" }}
           >
-            <p
-              className="text-xs tracking-[0.35em] uppercase mb-1.5"
-              style={{ color: "#C9A84C" }}
-            >
+            <p className="text-xs tracking-[0.35em] uppercase mb-1.5" style={{ color: "#C9A84C" }}>
               {member.role}
             </p>
-            <p
-              className="text-2xl font-black text-white"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
+            <p className="text-2xl font-black text-white" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
               {member.name}
             </p>
             <div className="mt-3 flex items-center gap-4">
@@ -379,7 +386,6 @@ function MemberLightbox({ member, onClose }) {
 }
 
 // ─── GALLERY LIGHTBOX ─────────────────────────────────────────────────────────
-
 function Lightbox({ images, activeIndex, onClose, onPrev, onNext }) {
   useEffect(() => {
     const handler = (e) => {
@@ -391,10 +397,7 @@ function Lightbox({ images, activeIndex, onClose, onPrev, onNext }) {
     return () => window.removeEventListener("keydown", handler);
   }, [onClose, onPrev, onNext]);
 
-  if (activeIndex === null || activeIndex === undefined || !images[activeIndex]) {
-    return null;
-  }
-
+  if (activeIndex === null || activeIndex === undefined || !images[activeIndex]) return null;
   const currentImage = images[activeIndex];
 
   return (
@@ -414,7 +417,6 @@ function Lightbox({ images, activeIndex, onClose, onPrev, onNext }) {
       >
         <X size={18} color="#C9A84C" />
       </button>
-
       <button
         className="absolute left-4 md:left-8 z-10 w-10 h-10 rounded-full flex items-center justify-center"
         style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}
@@ -433,25 +435,13 @@ function Lightbox({ images, activeIndex, onClose, onPrev, onNext }) {
           className="relative max-w-3xl w-full"
           onClick={(e) => e.stopPropagation()}
         >
-         <picture>
-  <source
-    srcSet={currentImage.src}
-    type="image/webp"
-  />
-
-  <img
-    src={currentImage.src.replace(".webp", ".jpg")}
-    alt={currentImage.label || "Gallery image"}
-    loading="eager"
-    decoding="async"
-    className="w-full h-auto rounded-2xl object-contain"
-    style={{
-      maxHeight: "80vh",
-      width: "100%",
-      backgroundColor: "#111",
-    }}
-  />
-</picture>
+          <SafeImg
+            src={currentImage.src}
+            alt={currentImage.label || "Gallery image"}
+            loading="eager"
+            className="w-full h-auto rounded-2xl object-contain"
+            style={{ maxHeight: "80vh", width: "100%", backgroundColor: "#111" }}
+          />
           <div
             className="absolute bottom-0 left-0 right-0 p-5 rounded-b-2xl"
             style={{ background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)" }}
@@ -476,10 +466,52 @@ function Lightbox({ images, activeIndex, onClose, onPrev, onNext }) {
 }
 
 // ─── GALLERY ITEM ─────────────────────────────────────────────────────────────
-function GalleryItem({ item, index, onClick }) { const ref = useRef(null); const inView = useInView(ref, { once: true, margin: "-40px" }); const shouldReduceMotion = useReducedMotion(); const [hovered, setHovered] = useState(false); return ( <motion.div ref={ref} className={`relative overflow-hidden rounded-2xl cursor-pointer ${item.span || ""}`} style={{ minHeight: item.span ? "320px" : "200px" }} initial="hidden" animate={inView ? "visible" : "hidden"} variants={scaleIn} custom={index * 0.5} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={() => onClick(index)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(index); } }} role="button" tabIndex={0} aria-label={`Open gallery image: ${item.label}`} > <picture className="block w-full h-full"> <source srcSet={item.src} type="image/webp" /> <motion.img src={item.src.replace(".webp", ".jpg")} alt={`Mooch Saloon — ${item.label}`} loading="lazy" decoding="async" className="w-full h-full object-cover" animate={{ scale: shouldReduceMotion ? 1 : hovered ? 1.1 : 1, }} transition={{ duration: shouldReduceMotion ? 0 : 0.35, ease: [0.22, 1, 0.36, 1], }} style={{ minHeight: "inherit" }} /> </picture> <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(to bottom, transparent 45%, rgba(0,0,0,0.75) 100%)", }} /> <div className="absolute bottom-0 left-0 right-0 p-4"> <p className="text-sm font-semibold" style={{ color: "#ffffff" }} > {item.label} </p> </div> </motion.div> ); }
+function GalleryItem({ item, index, onClick }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+  const shouldReduceMotion = useReducedMotion();
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <motion.div
+      ref={ref}
+      className={`relative overflow-hidden rounded-2xl cursor-pointer ${item.span || ""}`}
+      style={{ minHeight: item.span ? "320px" : "200px" }}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+      variants={scaleIn}
+      custom={index * 0.5}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onClick={() => onClick(index)}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(index); } }}
+      role="button"
+      tabIndex={0}
+      aria-label={`Open gallery image: ${item.label}`}
+    >
+      <SafeImg
+        src={item.src}
+        alt={`Mooch Saloon — ${item.label}`}
+        loading="lazy"
+        className="w-full h-full object-cover"
+        style={{
+          minHeight: "inherit",
+          transform: shouldReduceMotion ? "scale(1)" : hovered ? "scale(1.1)" : "scale(1)",
+          transition: shouldReduceMotion ? "none" : "transform 0.35s cubic-bezier(0.22,1,0.36,1)",
+        }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent 45%, rgba(0,0,0,0.75) 100%)" }}
+      />
+      <div className="absolute bottom-0 left-0 right-0 p-4">
+        <p className="text-sm font-semibold text-white">{item.label}</p>
+      </div>
+    </motion.div>
+  );
+}
 
 // ─── REEL CARD ────────────────────────────────────────────────────────────────
-
 function ReelCard({ reel, index }) {
   const ref = useRef(null);
   const videoRef = useRef(null);
@@ -487,14 +519,15 @@ function ReelCard({ reel, index }) {
   const shouldReduceMotion = useReducedMotion();
   const [playing, setPlaying] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
   const toggle = () => {
-    if (!videoRef.current) return;
+    if (!videoRef.current || videoError) return;
     if (playing) {
       videoRef.current.pause();
       setPlaying(false);
     } else {
-      videoRef.current.play();
+      videoRef.current.play().catch(() => setVideoError(true));
       setPlaying(true);
     }
   };
@@ -511,39 +544,50 @@ function ReelCard({ reel, index }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={toggle}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          toggle();
-        }
-      }}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } }}
       role="button"
       tabIndex={0}
       aria-label={`${playing ? "Pause" : "Play"} reel: ${reel.title}`}
     >
-      <video
-  src="/reels/reel1.mp4"
-   poster="/reels/r1-poster.jpg"   // ← mandatory
-  playsInline
-  muted
-  preload="none"                      
-  controlsList="nodownload"
-  onError={(e) => {
-    // fallback to poster image if video fails
-    e.currentTarget.style.display = 'none';
-    e.currentTarget.nextSibling.style.display = 'block';
-  }}
-/>
-<img src="/reels/reel1-poster.jpg" style={{ display: 'none' }} alt="reel preview" />
+      {/* Poster thumbnail shown when video errors or before play */}
+      <SafeImg
+        src={reel.thumb}
+        alt={`${reel.title} preview`}
+        loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ display: videoError ? "block" : "block", zIndex: playing ? -1 : 0 }}
+      />
+
+      {/* Actual video */}
+      {!videoError && (
+        <video
+          ref={videoRef}
+          src={reel.src}
+          poster={reel.thumb}
+          playsInline
+          muted
+          preload="none"
+          loop
+          controlsList="nodownload"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ zIndex: playing ? 1 : -1 }}
+          onError={() => { setVideoError(true); setPlaying(false); }}
+        />
+      )}
+
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: "linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.85) 100%)" }}
+        style={{
+          background: "linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.85) 100%)",
+          zIndex: 2,
+        }}
       />
 
       <motion.div
         className="absolute inset-0 flex items-center justify-center"
         animate={{ opacity: shouldReduceMotion ? 1 : hovered || !playing ? 1 : 0 }}
         transition={{ duration: shouldReduceMotion ? 0 : 0.25 }}
+        style={{ zIndex: 3 }}
       >
         <motion.div
           className="w-14 h-14 rounded-full flex items-center justify-center"
@@ -562,24 +606,17 @@ function ReelCard({ reel, index }) {
         </motion.div>
       </motion.div>
 
-      <div className="absolute bottom-0 left-0 right-0 p-4">
+      <div className="absolute bottom-0 left-0 right-0 p-4" style={{ zIndex: 3 }}>
         <p className="text-xs tracking-[0.2em] uppercase mb-1" style={{ color: "#C9A84C" }}>
           Mooch Saloon
         </p>
         <p className="text-white text-sm font-semibold">{reel.title}</p>
       </div>
-
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{ opacity: hovered ? 1 : 0 }}
-        style={{ background: "linear-gradient(135deg, rgba(201,168,76,0.08) 0%, transparent 50%)" }}
-      />
     </motion.div>
   );
 }
 
 // ─── INSTAGRAM CTA ────────────────────────────────────────────────────────────
-
 function InstagramCTA() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -594,19 +631,12 @@ function InstagramCTA() {
     >
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 70%)",
-        }}
+        style={{ background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 70%)" }}
       />
-      <div
-        className="absolute top-0 left-0 right-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent)" }}
-      />
-      <div
-        className="absolute bottom-0 left-0 right-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent)" }}
-      />
+      <div className="absolute top-0 left-0 right-0 h-px"
+        style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent)" }} />
+      <div className="absolute bottom-0 left-0 right-0 h-px"
+        style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent)" }} />
 
       <div className="max-w-2xl mx-auto text-center relative z-10">
         <motion.div variants={fadeUp} custom={0}>
@@ -621,30 +651,20 @@ function InstagramCTA() {
           </div>
         </motion.div>
 
-        <motion.p
-          variants={fadeUp}
-          custom={1}
-          className="text-xs tracking-[0.4em] uppercase mb-3"
-          style={{ color: "#C9A84C" }}
-        >
+        <motion.p variants={fadeUp} custom={1}
+          className="text-xs tracking-[0.4em] uppercase mb-3" style={{ color: "#C9A84C" }}>
           Follow Us
         </motion.p>
 
-        <motion.h2
-          variants={fadeUp}
-          custom={2}
+        <motion.h2 variants={fadeUp} custom={2}
           className="text-4xl md:text-5xl font-black text-white mb-4"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-        >
+          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
           Stay in the Cut
         </motion.h2>
 
-        <motion.p
-          variants={fadeUp}
-          custom={3}
+        <motion.p variants={fadeUp} custom={3}
           className="text-sm md:text-base mb-8 leading-relaxed"
-          style={{ color: "rgba(255,255,255,0.45)" }}
-        >
+          style={{ color: "rgba(255,255,255,0.45)" }}>
           Follow{" "}
           <span style={{ color: "#C9A84C" }}>@mooch_saloon_rr</span>{" "}
           on Instagram for daily transformations, style drops, and behind-the-chair moments from Pushkar's finest grooming studio.
@@ -673,24 +693,19 @@ function InstagramCTA() {
           Follow @mooch_saloon_rr
         </motion.a>
 
-        <motion.div
-          variants={fadeUp}
-          custom={5}
-          className="mt-10 flex justify-center gap-10"
-        >
+        <motion.div variants={fadeUp} custom={5} className="mt-10 flex justify-center gap-10">
           {[
             { n: "1K+", l: "Followers" },
             { n: "200+", l: "Posts" },
             { n: "5★",  l: "Rated" },
           ].map((s) => (
             <div key={s.l} className="text-center">
-              <p
-                className="text-2xl font-black"
-                style={{ fontFamily: "'Playfair Display', serif", color: "#C9A84C" }}
-              >
+              <p className="text-2xl font-black"
+                style={{ fontFamily: "'Playfair Display', serif", color: "#C9A84C" }}>
                 {s.n}
               </p>
-              <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.35)", letterSpacing: "0.1em" }}>
+              <p className="text-xs mt-1"
+                style={{ color: "rgba(255,255,255,0.35)", letterSpacing: "0.1em" }}>
                 {s.l}
               </p>
             </div>
@@ -702,17 +717,15 @@ function InstagramCTA() {
 }
 
 // ─── MAIN EXPORT ──────────────────────────────────────────────────────────────
-
 export default function MoochSaloonShowcase() {
   const shouldReduceMotion = useReducedMotion();
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [activeMember, setActiveMember] = useState(null);
+
   const openLightbox = (i) => setLightboxIndex(i);
   const closeLightbox = () => setLightboxIndex(null);
-  const prevImg = () =>
-    setLightboxIndex((i) => (i === null ? 0 : (i - 1 + GALLERY.length) % GALLERY.length));
-  const nextImg = () =>
-    setLightboxIndex((i) => (i === null ? 0 : (i + 1) % GALLERY.length));
+  const prevImg = () => setLightboxIndex((i) => (i === null ? 0 : (i - 1 + GALLERY.length) % GALLERY.length));
+  const nextImg = () => setLightboxIndex((i) => (i === null ? 0 : (i + 1) % GALLERY.length));
 
   return (
     <div
@@ -741,7 +754,7 @@ export default function MoochSaloonShowcase() {
 
       <div className={shouldReduceMotion ? "" : "grain"}>
 
-        {/* ── TEAM ──────────────────────────────────────────────────── */}
+        {/* ── TEAM ── */}
         <section className="relative py-24 px-6 md:px-12 max-w-6xl mx-auto">
           <div className="flex justify-center mb-4">
             <Scissors size={24} color="rgba(201,168,76,0.4)" />
@@ -753,12 +766,7 @@ export default function MoochSaloonShowcase() {
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {TEAM.map((member, i) => (
-              <TeamCard
-  key={member.id}
-  member={member}
-  index={i}
-  onImageClick={setActiveMember}
-/>
+              <TeamCard key={member.id} member={member} index={i} onImageClick={setActiveMember} />
             ))}
           </div>
         </section>
@@ -767,7 +775,7 @@ export default function MoochSaloonShowcase() {
           <div className="h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent)" }} />
         </div>
 
-        {/* ── GALLERY ───────────────────────────────────────────────── */}
+        {/* ── GALLERY ── */}
         <section className="relative py-24 px-6 md:px-12 max-w-6xl mx-auto">
           <SectionHeader
             eyebrow="The Work"
@@ -786,13 +794,7 @@ export default function MoochSaloonShowcase() {
 
         <AnimatePresence>
           {lightboxIndex !== null && (
-            <Lightbox
-              images={GALLERY}
-              activeIndex={lightboxIndex}
-              onClose={closeLightbox}
-              onPrev={prevImg}
-              onNext={nextImg}
-            />
+            <Lightbox images={GALLERY} activeIndex={lightboxIndex} onClose={closeLightbox} onPrev={prevImg} onNext={nextImg} />
           )}
         </AnimatePresence>
 
@@ -800,7 +802,7 @@ export default function MoochSaloonShowcase() {
           <div className="h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent)" }} />
         </div>
 
-        {/* ── REELS ─────────────────────────────────────────────────── */}
+        {/* ── REELS ── */}
         <section className="relative py-24 px-6 md:px-12 max-w-6xl mx-auto">
           <SectionHeader
             eyebrow="Behind The Chair"
@@ -814,15 +816,13 @@ export default function MoochSaloonShowcase() {
           </div>
         </section>
 
-        {/* ── INSTAGRAM CTA ─────────────────────────────────────────── */}
+        {/* ── INSTAGRAM CTA ── */}
         <AnimatePresence>
           {activeMember && (
-            <MemberLightbox
-              member={activeMember}
-              onClose={() => setActiveMember(null)}
-            />
+            <MemberLightbox member={activeMember} onClose={() => setActiveMember(null)} />
           )}
         </AnimatePresence>
+
         <InstagramCTA />
 
       </div>
