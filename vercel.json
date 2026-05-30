@@ -1,4 +1,3 @@
-// cache-bust: 202605301227
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
