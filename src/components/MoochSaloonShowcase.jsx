@@ -46,7 +46,7 @@ const TEAM = [
     role: "Co-Founder & Senior Barber",
     handle: "@its_rahul_rr_r18",
     instagram: "https://www.instagram.com/its_rahul_rr_r18",
-    phone: "+91-8955209287",
+    phone: "+918955209287",
     bio: "The visionary behind Mooch Saloon. Rahul brings precision, passion, and a decade of craft mastery to every cut — turning hair into art in the heart of Pushkar.",
     img: "/team/rahul.webp",
     imgFallback: "/team/rahul.jpg",
@@ -58,7 +58,7 @@ const TEAM = [
     role: "Grooming Specialist & Styling Expert",
     handle: "@manish8522_",
     instagram: "https://www.instagram.com/manish8522_",
-    phone: "+91-7357498469",
+    phone: "+917357498469",
     bio: "Manish blends modern techniques with Rajasthani charm. His eye for detail and obsession with clean lines make every client walk out feeling like royalty.",
     img: "/team/manish.webp",
     imgFallback: "/team/manish.jpg",
@@ -110,7 +110,8 @@ function SafeImg({ src, fallback, alt, className, style, loading = "lazy", ...pr
   const actualSrc = errored ? (fallback || src.replace(".webp", ".jpg")) : src;
   return (
     <img
-      src={actualSrc}
+    width="400" height="500"   
+    src={actualSrc}
       alt={alt}
       className={className}
       style={style}
