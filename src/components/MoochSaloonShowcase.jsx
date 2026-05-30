@@ -81,7 +81,7 @@ const GALLERY = [
 const REELS = [
   { id: 1, src: "/reels/r1.mp4", thumb: "/gallery/g5.webp",  title: "The Perfect Art" },
   { id: 2, src: "/reels/r2.mp4", thumb: "/gallery/g3.webp",  title: "The Craft" },
-  { id: 3, src: "/reels/r3.mp4", thumb: "/gallery/g1.webp",  title: "Just The Salon Things" },
+  { id: 3, src: "/reels/r3.mp4", thumb: "/reels/r3.jpg",  title: " The Salon Things" },
   { id: 4, src: "/reels/r4.mp4", thumb: "/gallery/g9.webp", title: "The Art of Grooming" },
 ];
 
@@ -554,7 +554,8 @@ function ReelCard({ reel, index }) {
         alt={`${reel.title} preview`}
         loading="lazy"
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ display: videoError ? "block" : "block", zIndex: playing ? -1 : 0 }}
+        style={{ 
+             objectPosition: "top",  zIndex: playing ? -1 : 0 }}
       />
 
       {/* Actual video */}
