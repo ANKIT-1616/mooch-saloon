@@ -60,7 +60,7 @@ export default function Contact() {
                   </address>
                   <CinematicButton
                     variant="outline"
-                    href="https://maps.google.com/?q=Mooch+Saloon+Pushkar+Rajasthan"
+                    href="https://www.google.com/maps/place/?q=place_id:0x396bdd795ae32189:0xcda6a4b5928c4db9"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="py-2.5 px-6 text-[10px] sm:text-xs border-white/5"
@@ -119,7 +119,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="font-sans text-xs text-white/50 mb-4">
-                    Speak directly with Rahul  for bookings or queries.
+                    Speak directly with Rahul for bookings or queries.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <CinematicButton
@@ -153,7 +153,7 @@ export default function Contact() {
               <div className="relative w-full h-full min-h-[450px] lg:min-h-0 flex-1 overflow-hidden border border-white/5 bg-[#151515] rounded-none shadow-xl">
                 {/* Standard Google Map with dark visual filter */}
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14285.193025686008!2d74.55106269999999!3d26.4862438!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396be220f4b30cb9%3A0xc6cbef8fbb664082!2sMooch%20Saloon!5e0!3m2!1sen!2sin!4v1716440400000!5m2!1sen!2sin"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d227.93!2d74.5508768!3d26.4911403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396bdd795ae32189%3A0xcda6a4b5928c4db9!2sMooch%20Saloon!5e0!3m2!1sen!2sin!4v1748700000000!5m2!1sen!2sin"
                   width="100%"
                   height="100%"
                   style={{ border: 0, height: "100%", width: "100%", minHeight: "450px", filter: "invert(90%) hue-rotate(180deg) contrast(120%) brightness(85%)" }}
