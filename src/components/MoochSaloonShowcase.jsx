@@ -69,14 +69,16 @@ const TEAM = [
 const GALLERY = [
   
   { id: 1, src: "/gallery/g1.webp",  label: "The Mooch Lounge",         span: "row-span-2" },
-  { id: 2, src: "/gallery/g2.webp",  label: "Royal Styling" },
-  { id: 3, src: "/gallery/g3.webp",  label: "Textured Pompadour" },
+  { id: 2, src: "/gallery/g2.webp",  label: "The Sculpt" },
+  { id: 3, src: "/gallery/g3.webp",  label: "High skin fade" },
   { id: 4, src: "/gallery/g4.webp",  label: "The Finish",               span: "row-span-2" },
   { id: 5, src: "/gallery/g5.webp",  label: "The Gentleman's Fade" },
-  { id: 6, src: "/gallery/g6.webp",  label: "Where Style Meets Comfort" },
+  { id: 6, src: "/gallery/g6.webp",  label: "The Burst fade Mullet" },
   { id: 7, src: "/gallery/g7.webp",  label: "Mid Taper Fade" },
   { id: 8, src: "/gallery/g8.webp",  label: "Premium Finish" },
-  { id: 9, src: "/gallery/g9.webp",  label: "Sharp Beard Work" },
+  { id: 9, src: "/gallery/g9.webp",  label: "Mid Taper Fade" },
+  { id: 10, src: "/gallery/g10.webp",  label: "" },
+  { id: 11, src: "/gallery/g11.webp",  label: "" },
 ];
 const REELS = [
   { id: 1, src: "/reels/r1.mp4", thumb: "/gallery/g5.webp",  title: "The Perfect Art" },
