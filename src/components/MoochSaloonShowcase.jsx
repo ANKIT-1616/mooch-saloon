@@ -71,18 +71,18 @@ const GALLERY = [
   { id: 1, src: "/gallery/g1.webp",  label: "The Mooch Lounge",         span: "row-span-2" },
   { id: 2, src: "/gallery/g2.webp",  label: "The Sculpt" },
   { id: 3, src: "/gallery/g3.webp",  label: "High skin fade" },
-  { id: 4, src: "/gallery/g4.webp",  label: "The Finish",               span: "row-span-2" },
+  { id: 4, src: "/gallery/g4.webp",  label: "Classic taper Quiff",               span: "row-span-2" },
   { id: 5, src: "/gallery/g5.webp",  label: "The Gentleman's Fade" },
   { id: 6, src: "/gallery/g6.webp",  label: "The Burst fade Mullet" },
   { id: 7, src: "/gallery/g7.webp",  label: "Mid Taper Fade" },
   { id: 8, src: "/gallery/g8.webp",  label: "Premium Finish" },
   { id: 9, src: "/gallery/g9.webp",  label: "Mid Taper Fade" },
-  { id: 10, src: "/gallery/g10.webp",  label: "" },
-  { id: 11, src: "/gallery/g11.webp",  label: "" },
+  { id: 10, src: "/gallery/g10.webp",  label: "The Street Quiff" },
+  { id: 11, src: "/gallery/g11.webp",  label: "The Classic Side Part" },
 ];
 const REELS = [
   { id: 1, src: "/reels/r1.mp4", thumb: "/gallery/g5.webp",  title: "The Perfect Art" },
-  { id: 2, src: "/reels/r2.mp4", thumb: "/gallery/g3.webp",  title: "The Craft" },
+  { id: 2, src: "/reels/r2.mp4", thumb: "/gallery/g4.webp",  title: "The Craft" },
   { id: 3, src: "/reels/r3.mp4", thumb: "/reels/r3-poster.jpg",  title: " The Salon Things" },
   { id: 4, src: "/reels/r4.mp4", thumb: "/gallery/g9.webp", title: "The Art of Grooming" },
 ];
